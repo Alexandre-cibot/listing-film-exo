@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contacts</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
+    <!-- Fause bdd, qui contient la variable sotckFilms-->
+    <script src="bdd.js"></script>
+     <!-- Matelialize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+  <!-- End Materialize -->
+    <!--Templates-->
+    <script type="text/template" id="film-template">
+      <div class="col m3 s6">
+            <div class="card">
+              <div class="card-image">
+                <img src="<%= image %>">
+              </div>
+              <div class="card-content">
+              <span class="card-title"><%= titre %></span>
+                <p><%= resume %></p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+    </script>
+    <!-- End Template -->
+
+    <script>
+        (function( $, Backbone  )
+        {
+            // Données et models
+            /* Contact { id:1, nom:"ALLIOD", prenom:"Sebastien" }  */
+            var FilmModel = Backbone.Model.extend
+            (
+                {
+                    defaults :
+                    {
+                        titre: "Titre",
+                        resume: "La description",
+                        image: ""
+                    }
+                }
+            );
+            
+            var FilmsCollection = Backbone.Collection.extend
+            (
+               {
+                    model : FilmModel
+               }
+            );
+
+            // Vues
+            var FilmView = Backbone.View.extend
+            (
+               {
+                   tagName : "li"
+               }
+            );
+
+            var filmListView = Backbone.View.extend
+            (
+               {
+                   collection : null,
+                   template : _.template( $( "#film-template" ).html() ),
+                   initialize : function()
+                   {
+                       // Liaison événementielle entre la collection et la vue
+                       // !! Attention à la portée du callback !!
+                       // this.collection.on( "add", this.render, this );
+                       // Portée préservée en utilisant jquery
+                       //this.collection.on( "add", $.proxy( this.render, this ) );
+                       // ! Zombie view : best practice
+                       this.listenTo( this.collection, "add", this.render );
+                       this.render();
+                   },
+                   render : function()
+                   {
+                       var self = this;
+                       this.$el.empty();
+                       this.collection.each
+                       (
+                           function( film )
+                           {
+                                self.$el.append
+                                (
+                                    self.template( film.toJSON() )
+                                )
+                                console.log(film.toJSON());
+                           }
+                       );
+                   }
+               }
+            );
+
+
+            //Données mockups correspondant à la liste des contacts
+            var films;
+
+            /**
+             * Document ready event
+             * alias de $(document).ready( function(){} );
+             */
+            $( function ()
+                {
+
+                    /**
+                     *  Réception des données du serveur
+                     *
+                     */
+                    var main = function()
+                    {
+                        films = new FilmsCollection();
+
+                        // Annule le message de chargement
+                        $( "#loading").remove();
+
+                        // Renseigne les éléments de la liste
+                        filmListView = new filmListView
+                        (
+                             {
+                                el        : "#films_list",
+                                collection: films
+                             }
+                        );
+
+                        // On ajoute les données APRÈS la création de la vue
+                        // pour que l'événement add soit utilisé
+                        for (var i = 0; i < stockFilms.length; i++){
+                          films.add( new FilmModel( stockFilms[i] ) );
+                        }
+                    };
+
+
+                    $( "body" ).append( "<h1 id='loading'>Merci de patienter pendant le chargement des données</h1>" );
+                    // Active une pseudo requête async HTTP
+                    //setTimeout( main, 2000 );
+                    main();
+
+                }
+            );
+        })(jQuery, Backbone );
+
+    </script>
+</head>
+<body>
+<h1 class="center">Movies list</h1>
+<div>
+  <div class="row" id="films_list">
+    
+  </div>
+</div>
+</body>
+</html>
