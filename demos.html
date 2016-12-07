@@ -5,9 +5,75 @@
 	<title>Demo liste movies</title>
 	<link rel="stylesheet" href="src/reset.css">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	<style>
+		.card{
+			border:1px solid black;
+			padding:13px;
+			text-align:center;
+		}
+		img{
+			height:300px;
+		}
+		b{
+			font-weight: bold;
+		}
+	</style>
 </head>
 <body>
+<div id="loading">Chargement des données ...</div>
+<div id="films_list">
+	<ul>
+	</ul>
+</div>
 	
-	
+	<script>
+		
+		(function($){
+
+			var films;
+
+			// Document ready event.
+			$(function () 
+			{
+				// Récupération des données
+
+				var main = function () 
+				{
+					// Liste des films
+					films = 
+					[
+						{ id:1, titre: "divergente", resume: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et risus ac ex convallis elementum. Morbi quis nisi quis neque pulvinar molestie at eu est. Praesent a cursus mi. Nullam ultricies neque eu odio placerat, in hendrerit diam feugiat. Nulla faucibus pretium velit at lobortis. Proin in mi ac ligula pellentesque luctus a vitae tellus. Donec eu justo eget nisi vulputate luctus. Pellentesque sagittis dictum nisi, id porta nunc consequat id. Praesent sed sem ut erat pellentesque aliquet.", image: "./src/img/divergente.jpg"},
+						{ id:2, titre: "hercule", resume: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et risus ac ex convallis elementum. Morbi quis nisi quis neque pulvinar molestie at eu est. Praesent a cursus mi. Nullam ultricies neque eu odio placerat, in hendrerit diam feugiat. Nulla faucibus pretium velit at lobortis. Proin in mi ac ligula pellentesque luctus a vitae tellus. Donec eu justo eget nisi vulputate luctus. Pellentesque sagittis dictum nisi, id porta nunc consequat id. Praesent sed sem ut erat pellentesque aliquet.", image: "./src/img/hercule.jpg" },
+						{ id:3, titre: "hope", resume: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et risus ac ex convallis elementum. Morbi quis nisi quis neque pulvinar molestie at eu est. Praesent a cursus mi. Nullam ultricies neque eu odio placerat, in hendrerit diam feugiat. Nulla faucibus pretium velit at lobortis. Proin in mi ac ligula pellentesque luctus a vitae tellus. Donec eu justo eget nisi vulputate luctus. Pellentesque sagittis dictum nisi, id porta nunc consequat id. Praesent sed sem ut erat pellentesque aliquet.", image: "./src/img/hope.jpg" },
+						{ id:4, titre: "medecin", resume: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et risus ac ex convallis elementum. Morbi quis nisi quis neque pulvinar molestie at eu est. Praesent a cursus mi. Nullam ultricies neque eu odio placerat, in hendrerit diam feugiat. Nulla faucibus pretium velit at lobortis. Proin in mi ac ligula pellentesque luctus a vitae tellus. Donec eu justo eget nisi vulputate luctus. Pellentesque sagittis dictum nisi, id porta nunc consequat id. Praesent sed sem ut erat pellentesque aliquet.", image: "./src/img/medecin.jpg" },
+						{ id:5, titre: "room", resume: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et risus ac ex convallis elementum. Morbi quis nisi quis neque pulvinar molestie at eu est. Praesent a cursus mi. Nullam ultricies neque eu odio placerat, in hendrerit diam feugiat. Nulla faucibus pretium velit at lobortis. Proin in mi ac ligula pellentesque luctus a vitae tellus. Donec eu justo eget nisi vulputate luctus. Pellentesque sagittis dictum nisi, id porta nunc consequat id. Praesent sed sem ut erat pellentesque aliquet.", image: "./src/img/room.jpg" },
+						{ id:6, titre: "saint-amour", resume: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et risus ac ex convallis elementum. Morbi quis nisi quis neque pulvinar molestie at eu est. Praesent a cursus mi. Nullam ultricies neque eu odio placerat, in hendrerit diam feugiat. Nulla faucibus pretium velit at lobortis. Proin in mi ac ligula pellentesque luctus a vitae tellus. Donec eu justo eget nisi vulputate luctus. Pellentesque sagittis dictum nisi, id porta nunc consequat id. Praesent sed sem ut erat pellentesque aliquet.", image: "./src/img/saint-amour.jpg" },
+					]
+				
+
+					// Annule le message de chargement.
+					$('#loading').remove();
+
+					// Renseigne les éléments de la liste.
+					var $films_list = $('#films_list');
+					var film;
+
+					for(var i = 0; i<films.length; i++) {
+						film = films[i];
+						$films_list.append(
+							"<li class='card'><img src='" + film.image + "'>" + "<br> <b>Id : </b>" + film.id + "<br><b>Titre : </b>" + film.titre + "<br><b>Résumé : </b>"+ film.resume + "</li>"
+						)
+					}
+				}
+				// Temps de latence.
+				//setTimeout(main, 3000);
+				main()
+
+			}) // End document.ready
+
+
+		})(jQuery)
+
+	</script>
 </body>
 </html>
