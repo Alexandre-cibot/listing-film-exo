@@ -1,7 +1,7 @@
 ## How to 
-download the porject
-go in the contact_6 repository
-open an server  --> php -S localhost:2222 (if you have php on your machine)
+- download the project
+- go in the contact_6 repository
+- open an server  --> php -S localhost:2222 (if you have php on your machine)
 index.html
 
 ## Other files
